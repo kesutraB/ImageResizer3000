@@ -25,7 +25,7 @@ namespace ImageResizer3000
 			return (files == null || files.Count == 0);
 		}
 
-		public static void Error(string errorMessage)
+		public static void PrintErrorMessage(string errorMessage)
 		{
 			Console.ForegroundColor = ConsoleColor.DarkRed;
 			Console.WriteLine(errorMessage);

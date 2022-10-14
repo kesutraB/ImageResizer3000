@@ -18,6 +18,14 @@ namespace ImageResizer3000
 
 		}
 
+		private static string CheckCommand(string inputCommand)
+		{
+			if (Regex.Replace(inputCommand, @"\s+", "") == "-r" || Regex.Replace(inputCommand, @"\s+", "") == "--resize")
+			{
+				Helpers.PrintErrorMessage();
+			}
+		}
+
 		private static string IsCommandAWidthResizeCommand(string inputCommand)
 		{
 			string[] sub = inputCommand.Split('=');
@@ -30,7 +38,7 @@ namespace ImageResizer3000
 			    && width > 100 && width < 1200)
 				return inputCommand;
 
-			Helpers.Error($"{inputCommand} is not a valid command.");
+			Helpers.PrintErrorMessage($"{inputCommand} is not a valid command.");
 			return null;
 		}
 
