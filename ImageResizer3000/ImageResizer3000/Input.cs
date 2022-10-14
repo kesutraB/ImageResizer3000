@@ -10,7 +10,7 @@ namespace ImageResizer3000
 
 	public class Input
 	{
-		public const string RegexConstant = "Regex.Replace(sub[0], @\"\\s+\",\"\"";
+		//public const string RegexConstant = "Regex.Replace(sub[0], @\"\\s+\",\"\"";
 		public static string[] Commands = {"--thumbs", "-t", "--clean", "-c"};
 		public string ImgPath = null;
 		public string Command = null;
@@ -18,7 +18,38 @@ namespace ImageResizer3000
 
 		public Input(string[] args)
 		{
+			string nullImgPath = null;
+			string nullCommand = null;
 
+			while (nullImgPath == null || nullCommand == null)
+			{
+				if (args.Length == 0)
+				{
+					if (nullImgPath == null)
+						nullImgPath = GetImgPath();
+
+					if (nullCommand == null)
+						nullCommand = GetCommand();
+				}
+
+				if (args.Length > 0)
+				{
+					if ()
+				}
+			}
+		}
+
+		private string GetImgPath()
+		{
+			Console.Write("Enter image path: ");
+			string inputPath = Console.ReadLine();
+
+			if (Directory.Exists(inputPath))
+				return inputPath;
+
+			Helpers.PrintErrorMessage($"{ImgPath} is not a valid path.");
+			Environment.Exit(0);
+			return null;
 		}
 
 		private static string GetCommand()
@@ -26,6 +57,20 @@ namespace ImageResizer3000
 			Console.Write("Enter command: ");
 			string inputCommand = Console.ReadLine();
 			return CheckCommand(inputCommand);
+		}
+
+		private static Commands GetCommandType(string inputCommand)
+		{
+			if (inputCommand.Contains("-t"))
+				return ImageResizer3000.Commands.Thumbs;
+
+			if (inputCommand.Contains("="))
+				return ImageResizer3000.Commands.Resize;
+
+			if (inputCommand.Contains("-c"))
+				return ImageResizer3000.Commands.Clean;
+
+			return ImageResizer3000.Commands.Clean;
 		}
 
 		private static string CheckCommand(string inputCommand)
@@ -61,33 +106,6 @@ namespace ImageResizer3000
 				return inputCommand;
 
 			Helpers.PrintErrorMessage($"{inputCommand} is not a valid command.");
-			return null;
-		}
-
-		private static Commands GetCommandType(string inputCommand)
-		{
-			if (inputCommand.Contains("-t"))
-				return ImageResizer3000.Commands.Thumbs;
-
-			if(inputCommand.Contains("="))
-				return ImageResizer3000.Commands.Resize;
-
-			if(inputCommand.Contains("-c"))
-				return ImageResizer3000.Commands.Clean;
-
-			return ImageResizer3000.Commands.Clean;
-		}
-
-		private string GetImgPath()
-		{
-			Console.Write("Enter image path: ");
-			string inputPath = Console.ReadLine();
-
-			if(Directory.Exists(inputPath))
-				return inputPath;
-
-			Helpers.PrintErrorMessage($"{ImgPath} is not a valid path.");
-			Environment.Exit(0);
 			return null;
 		}
 	}

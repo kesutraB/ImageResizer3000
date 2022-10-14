@@ -8,7 +8,7 @@ namespace ImageResizer3000
 	{
 		public static void CreateDir(string dir)
 		{
-			if(DoesDirExist(dir) == false)
+			if(!DoesDirExist(dir))
 				Directory.CreateDirectory(dir);
 		}
 
