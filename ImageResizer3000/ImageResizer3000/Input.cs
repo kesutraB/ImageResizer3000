@@ -64,7 +64,7 @@ namespace ImageResizer3000
 			if(Directory.Exists(inputPath))
 				return inputPath;
 
-			Helpers.Error($"{ImgPath} is not a valid path.");
+			Helpers.PrintErrorMessage($"{ImgPath} is not a valid path.");
 			Environment.Exit(0);
 			return null;
 		}
