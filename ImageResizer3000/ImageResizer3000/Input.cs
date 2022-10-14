@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using static System.String;
 
 namespace ImageResizer3000
 {
@@ -34,9 +34,22 @@ namespace ImageResizer3000
 
 				if (args.Length > 0)
 				{
-					if ()
+					if (!Helpers.DoesDirExist(args[0]))
+					{
+						nullImgPath = GetImgPath();
+						continue;
+					}
+
+					if(IsNullOrEmpty(args[1]))
+						nullCommand = GetCommand();
+
+					nullCommand = CheckCommand(args[1]);
 				}
 			}
+
+			CommandType = GetCommandType(nullCommand);
+			ImgPath = nullImgPath;
+			Command = nullCommand;
 		}
 
 		private string GetImgPath()
