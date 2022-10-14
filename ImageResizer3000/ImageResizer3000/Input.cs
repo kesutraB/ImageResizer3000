@@ -10,7 +10,6 @@ namespace ImageResizer3000
 
 	public class Input
 	{
-		//public const string RegexConstant = "Regex.Replace(sub[0], @\"\\s+\",\"\"";
 		public static string[] Commands = {"--thumbs", "-t", "--clean", "-c"};
 		public string ImgPath = null;
 		public string Command = null;
@@ -110,11 +109,12 @@ namespace ImageResizer3000
 		{
 			var sub = inputCommand.Split('=');
 			var width = int.Parse(sub[1]);
+			var regexConstant = Regex.Replace(sub[0], @"\\s+", "");
 
-			if (Regex.Replace(sub[0], @"\s+", "") == "-r-w"
-			    || Regex.Replace(sub[0], @"\s+", "") == "-resize-w"
-			    || Regex.Replace(sub[0], @"\s+", "") == "-r--width"
-			    || Regex.Replace(sub[0], @"\s+", "") == "-resize--width"
+			if (   regexConstant == "-r-w"
+			    || regexConstant == "-resize-w"
+			    || regexConstant == "-r--width"
+			    || regexConstant == "-resize--width"
 			    && width > 100 && width < 1200)
 				return inputCommand;
 
