@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ImageResizer3000
 {
-	public enum Commands {thumbs, resize, clean}
+	public enum Commands {Thumbs, Resize, Clean}
+
 	public class Input
 	{
+		public const string RegexConstant = "Regex.Replace(sub[0], @\"\\s+\",\"\"";
 		public static string[] Commands = {"--thumbs", "-t", "--clean", "-c"};
 		public string ImgPath = null;
 		public string Command = null;
@@ -18,20 +21,39 @@ namespace ImageResizer3000
 
 		}
 
+		private static string GetCommand()
+		{
+			Console.Write("Enter command: ");
+			string inputCommand = Console.ReadLine();
+			return CheckCommand(inputCommand);
+		}
+
 		private static string CheckCommand(string inputCommand)
 		{
 			if (Regex.Replace(inputCommand, @"\s+", "") == "-r" || Regex.Replace(inputCommand, @"\s+", "") == "--resize")
 			{
-				Helpers.PrintErrorMessage();
+				Helpers.PrintErrorMessage("Width command");
+				Console.Write("Enter width command: ");
+				return IsCommandAWidthResizeCommand($"{inputCommand}{Console.ReadLine()}");
 			}
+
+			if (inputCommand.Contains("="))
+				return IsCommandAWidthResizeCommand(inputCommand);
+
+			if (Commands.Contains(inputCommand))
+				return inputCommand;
+
+			Helpers.PrintErrorMessage($"{inputCommand} is not a valid command.");
+			Environment.Exit(0);
+			return null;
 		}
 
 		private static string IsCommandAWidthResizeCommand(string inputCommand)
 		{
-			string[] sub = inputCommand.Split('=');
-			int width = int.Parse(sub[1]);
+			var sub = inputCommand.Split('=');
+			var width = int.Parse(sub[1]);
 
-			if (   Regex.Replace(sub[0],@"\s+", "") == "-r-w"
+			if (Regex.Replace(sub[0], @"\s+", "") == "-r-w"
 			    || Regex.Replace(sub[0], @"\s+", "") == "-resize-w"
 			    || Regex.Replace(sub[0], @"\s+", "") == "-r--width"
 			    || Regex.Replace(sub[0], @"\s+", "") == "-resize--width"
@@ -45,15 +67,15 @@ namespace ImageResizer3000
 		private static Commands GetCommandType(string inputCommand)
 		{
 			if (inputCommand.Contains("-t"))
-				return ImageResizer3000.Commands.thumbs;
+				return ImageResizer3000.Commands.Thumbs;
 
 			if(inputCommand.Contains("="))
-				return ImageResizer3000.Commands.resize;
+				return ImageResizer3000.Commands.Resize;
 
 			if(inputCommand.Contains("-c"))
-				return ImageResizer3000.Commands.clean;
+				return ImageResizer3000.Commands.Clean;
 
-			return ImageResizer3000.Commands.clean;
+			return ImageResizer3000.Commands.Clean;
 		}
 
 		private string GetImgPath()
